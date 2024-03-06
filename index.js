@@ -41,6 +41,8 @@ app.post("/auth/sms", async (req, res) => {
 });
 
 // Start the server
-module.exports = app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+module.exports = server;
