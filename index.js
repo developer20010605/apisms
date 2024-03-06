@@ -23,7 +23,7 @@ firebase.initializeApp(firebaseConfig);
 app.use(bodyParser.json());
 
 // API endpoint to trigger SMS authentication
-app.post("/auth/sms", async (req, res) => {
+app.get("/auth/sms", async (req, res) => {
   const { phoneNumber } = req.body;
 
   try {
