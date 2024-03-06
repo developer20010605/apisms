@@ -9,26 +9,29 @@ const port = 3000;
 // Initialize Firebase with appropriate config
 const firebaseConfig = {
   apiKey: "AIzaSyATZPbmYzXjvbNh16nr4hnD_-VP2u97V_c",
-		authDomain: "railwayproject-80596.firebaseapp.com",
-		projectId: "railwayproject-80596",
-		storageBucket: "railwayproject-80596.appspot.com",
-		messagingSenderId: "111122909338",
-		appId: "1:111122909338:web:06fe534b11f0331783b723",
-		measurementId: "G-7MFDN0J7Y6"
+  authDomain: "railwayproject-80596.firebaseapp.com",
+  projectId: "railwayproject-80596",
+  storageBucket: "railwayproject-80596.appspot.com",
+  messagingSenderId: "111122909338",
+  appId: "1:111122909338:web:06fe534b11f0331783b723",
+  measurementId: "G-7MFDN0J7Y6"
 };
 
 firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Authentication
+const auth = firebase.auth();
 
 // Middleware to parse JSON request body
 app.use(bodyParser.json());
 
 // API endpoint to trigger SMS authentication
-app.get("/auth/sms", async (req, res) => {
+app.post("/auth/sms", async (req, res) => {
   const { phoneNumber } = req.body;
 
   try {
     // Trigger SMS authentication
-    const verification = await firebase.auth().signInWithPhoneNumber(phoneNumber);
+    const verification = await auth.signInWithPhoneNumber(phoneNumber);
 
     res.status(200).json({ success: true, message: "SMS verification sent successfully" });
   } catch (error) {
