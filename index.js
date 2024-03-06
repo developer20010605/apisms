@@ -1,7 +1,6 @@
 const express = require("express");
 const firebase = require("firebase");
 const bodyParser = require("body-parser");
-const cors = require("cors"); // Import cors middleware
 
 // Initialize Express app
 const app = express();
@@ -26,15 +25,18 @@ const auth = firebase.auth();
 // Middleware to parse JSON request body
 app.use(bodyParser.json());
 
-// Use CORS middleware to allow requests from specified origins
-app.use(cors());
-
 // API endpoint to trigger SMS authentication
 app.post("/auth/sms", async (req, res) => {
   const { phoneNumber } = req.body;
 
   try {
     // Trigger SMS authentication
+
+    // Set CORS headers to allow requests from any origin
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
     const verification = await auth.signInWithPhoneNumber(phoneNumber);
 
     res.status(200).json({ success: true, message: "SMS verification sent successfully" });
