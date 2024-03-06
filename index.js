@@ -1,7 +1,7 @@
 const express = require("express");
 const firebase = require("firebase");
 const bodyParser = require("body-parser");
-const cors = require("cors"); // Import the cors module
+const cors = require("cors"); // Import cors middleware
 
 // Initialize Express app
 const app = express();
@@ -26,8 +26,10 @@ const auth = firebase.auth();
 // Middleware to parse JSON request body
 app.use(bodyParser.json());
 
-// Use cors middleware to enable CORS for all origins
-app.use(cors({ origin: 'https://railwayclient.vercel.app' }));
+// Use CORS middleware to allow requests from specified origins
+app.use(cors({
+  origin: "https://railwayclient.vercel.app" // Change this to match your client application URL
+}));
 
 // API endpoint to trigger SMS authentication
 app.post("/auth/sms", async (req, res) => {
