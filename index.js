@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 
 // Initialize Express app
 const app = express();
-const port = process.env.PORT || 3000; // Use dynamic port assignment
+const port = process.env.PORT || 3000; // Use dynamic port assignments
 
 // Initialize Firebase with appropriate config
 const firebaseConfig = {
