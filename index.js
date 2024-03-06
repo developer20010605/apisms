@@ -27,9 +27,7 @@ const auth = firebase.auth();
 app.use(bodyParser.json());
 
 // Use CORS middleware to allow requests from specified origins
-app.use(cors({
-  origin: "https://railwayclient.vercel.app" // Change this to match your client application URL
-}));
+app.use(cors());
 
 // API endpoint to trigger SMS authentication
 app.post("/auth/sms", async (req, res) => {
