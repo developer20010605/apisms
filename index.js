@@ -1,12 +1,13 @@
 const express = require("express");
 const firebase = require("firebase");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
-// Initialize Express app
 const app = express();
-const port = process.env.PORT || 3000; // Use dynamic port assignments
+const port = process.env.PORT || 3000;
 
 // Initialize Firebase with appropriate config
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyATZPbmYzXjvbNh16nr4hnD_-VP2u97V_c",
   authDomain: "railwayproject-80596.firebaseapp.com",
@@ -19,11 +20,9 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// Initialize Firebase Authentication
-const auth = firebase.auth();
-
-// Middleware to parse JSON request body
+// Middleware
 app.use(bodyParser.json());
+app.use(cors());
 
 // API endpoint to trigger SMS authentication
 app.post("/auth/sms", async (req, res) => {
@@ -31,12 +30,7 @@ app.post("/auth/sms", async (req, res) => {
 
   try {
     // Trigger SMS authentication
-
-    // Set CORS headers to allow requests from any origin
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'POST');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
+    const auth = firebase.auth();
     const verification = await auth.signInWithPhoneNumber(phoneNumber);
 
     res.status(200).json({ success: true, message: "SMS verification sent successfully" });
@@ -47,6 +41,6 @@ app.post("/auth/sms", async (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+module.exports = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
