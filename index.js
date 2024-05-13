@@ -1,37 +1,24 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const admin = require('firebase-admin');
+// pages/api/phoneAuth.js
 
-// Initialize Firebase Admin SDK
-const serviceAccount = require('./keyy.json'); // Path to your service account key JSON file
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+import admin from '../../firebaseAdmin'; // Import Firebase Admin SDK
+import { NextApiRequest, NextApiResponse } from 'next';
 
-const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === 'POST') {
+    const { phoneNumber } = req.body;
 
-app.post('/api/phoneAuth', async (req, res) => {
-  const { phoneNumber } = req.body;
+    try {
+      const number = "+976" + phoneNumber; // Adjust country code accordingly
+      const verification = await admin.auth().sendPhoneNumberVerification(number);
 
-  try {
-    // Verify phone number
-    const number = "+976" + phoneNumber; // Adjust country code accordingly
-    const verification = await admin.auth().sendPhoneNumberVerification(number);
+      console.log('Verification ID:', verification);
 
-    console.log('Verification ID:', verification);
-
-    res.status(200).json({ success: true, message: 'Verification code sent.' });
-  } catch (error) {
-    console.error('Error in phoneAuth:', error);
-    res.status(500).json({ success: false, message: error.message });
+      res.status(200).json({ success: true, message: 'Verification code sent.' });
+    } catch (error) {
+      console.error('Error in phoneAuth:', error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  } else {
+    res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+}
