@@ -12,7 +12,7 @@ app.post('/api/phoneAuth', async (req, res) => {
 
   try {
     const number = "+976" + phoneNumber; // Adjust country code accordingly
-    const result = await admin.auth().sendPhoneVerification(number);
+    const result = await admin.auth().sendPhoneNumberVerification(number);
 
     console.log('Verification ID:', result);
 
