@@ -1,7 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const admin = require('./firebaseAdmin');
+const admin = require('firebase-admin');
+
+// Initialize Firebase Admin SDK
+const serviceAccount = require('./keyy.json'); // Path to your service account key JSON file
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 const app = express();
 app.use(cors());
@@ -11,11 +17,9 @@ app.post('/api/phoneAuth', async (req, res) => {
   const { phoneNumber } = req.body;
 
   try {
+    // Verify phone number
     const number = "+976" + phoneNumber; // Adjust country code accordingly
-    const options = {
-      phoneNumber: number
-    };
-    const verification = await admin.auth().signInWithPhoneNumber(number);
+    const verification = await admin.auth().sendPhoneNumberVerification(number);
 
     console.log('Verification ID:', verification);
 
