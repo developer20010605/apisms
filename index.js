@@ -4,15 +4,9 @@ import admin from '../../firebaseAdmin'; // Import Firebase Admin SDK
 import { NextApiRequest, NextApiResponse } from 'next';
 import cors from 'cors';
 
-// Initialize CORS middleware
-const corsMiddleware = cors({
-  origin: '*', // Allow requests from any origin
-  methods: ['POST'], // Allow only POST requests
-});
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  // Apply CORS middleware
-  await corsMiddleware(req, res);
+  // Enable CORS
+  await cors()(req, res);
 
   if (req.method === 'POST') {
     const { phoneNumber } = req.body;
