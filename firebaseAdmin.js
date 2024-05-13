@@ -1,7 +1,4 @@
-export { admin };
-// firebaseAdmin.js
-
-import admin from 'firebase-admin';
+const admin = require('firebase-admin');
 
 const serviceAccount = {
   "type": "service_account",
@@ -24,4 +21,4 @@ if (!admin.apps.length) {
   });
 }
 
-export { admin };
+module.exports = { admin };
