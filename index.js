@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { admin } = require('./firebaseAdmin');
+const admin = require('./firebaseAdmin');
 
 const app = express();
 app.use(cors());
@@ -12,14 +12,10 @@ app.post('/api/phoneAuth', async (req, res) => {
 
   try {
     const number = "+976" + phoneNumber; // Adjust country code accordingly
-    const message = {
-      notification: {
-        title: 'Verification Code',
-        body: 'Your verification code is: 123456', // Generate a random code here
-      },
-      token: number,
-    };
-    await admin.messaging().send(message);
+    const result = await admin.auth().sendPhoneVerification(number);
+
+    console.log('Verification ID:', result);
+
     res.status(200).json({ success: true, message: 'Verification code sent.' });
   } catch (error) {
     console.error('Error in phoneAuth:', error);
