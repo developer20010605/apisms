@@ -1,4 +1,5 @@
-// lib/firebaseAdmin.js
+export { admin };
+// firebaseAdmin.js
 
 import admin from 'firebase-admin';
 
@@ -19,7 +20,7 @@ const serviceAccount = {
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://your-project-id.firebaseio.com" // Replace with your database URL
+    databaseURL: "https://railwayproject-80596-default-rtdb.firebaseio.com" // Replace with your database URL
   });
 }
 
