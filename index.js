@@ -1,6 +1,6 @@
 // pages/api/phoneAuth.js
 
-import admin from '../../firebaseAdmin'; // Import Firebase Admin SDK
+import admin from './firebaseAdmin'; // Import Firebase Admin SDK
 import { NextApiRequest, NextApiResponse } from 'next';
 import cors from 'cors';
 
