@@ -12,14 +12,8 @@ app.post('/api/phoneAuth', async (req, res) => {
 
   try {
     const number = "+976" + phoneNumber; // Adjust country code accordingly
-    const message = {
-      notification: {
-        title: 'Verification Code',
-        body: 'Your verification code is: 123456', // Generate a random code here
-      },
-      token: number,
-    };
-    await admin.messaging().send(message);
+    const verification = await admin.auth().sendPhoneNumberVerification(number);
+    console.log('Verification ID:', verification);
     res.status(200).json({ success: true, message: 'Verification code sent.' });
   } catch (error) {
     console.error('Error in phoneAuth:', error);
