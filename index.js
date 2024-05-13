@@ -1,6 +1,14 @@
+import express from 'express';
+import cors from 'cors';
 import { admin } from './firebaseAdmin';
 
-export default async function handler(req, res) {
+const app = express();
+
+// Allow all origins
+app.use(cors());
+
+// Your API route for phone authentication
+app.post('/api/phoneAuth', async (req, res) => {
   if (req.method === 'POST') {
     const { phoneNumber } = req.body;
 
@@ -18,4 +26,10 @@ export default async function handler(req, res) {
   } else {
     res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
-}
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
