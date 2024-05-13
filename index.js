@@ -1,48 +1,21 @@
-const express = require("express");
-const firebase = require("firebase");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import { admin } from '../../firebaseAdmin';
 
-const app = express();
-const port = process.env.PORT || 3000;
+export default async function handler(req, res) {
+  if (req.method === 'POST') {
+    const { phoneNumber } = req.body;
 
-// Initialize Firebase with appropriate config
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyATZPbmYzXjvbNh16nr4hnD_-VP2u97V_c",
-  authDomain: "railwayproject-80596.firebaseapp.com",
-  projectId: "railwayproject-80596",
-  storageBucket: "railwayproject-80596.appspot.com",
-  messagingSenderId: "111122909338",
-  appId: "1:111122909338:web:06fe534b11f0331783b723",
-  measurementId: "G-7MFDN0J7Y6"
-};
+    try {
+      const number = "+976" + phoneNumber; // Adjust country code accordingly
+      const confirmationResult = await admin.auth().signInWithPhoneNumber(number);
 
-firebase.initializeApp(firebaseConfig);
+      // Here you might want to save `confirmationResult` or send it back to the client for further processing
 
-// Middleware
-app.use(bodyParser.json());
-app.use(cors());
-
-// API endpoint to trigger SMS authentication
-app.post("/auth/sms", async (req, res) => {
-  const { phoneNumber } = req.body;
-
-  try {
-    // Trigger SMS authentication
-    const auth = firebase.auth();
-    const verification = await auth.signInWithPhoneNumber(phoneNumber);
-
-    res.status(200).json({ success: true, message: "SMS verification sent successfully" });
-  } catch (error) {
-    console.error("Error sending SMS verification:", error);
-    res.status(500).json({ success: false, message: "Failed to send SMS verification" });
+      res.status(200).json({ success: true, message: 'Phone authentication initiated.' });
+    } catch (error) {
+      console.error('Error in phoneAuth:', error);
+      res.status(500).json({ success: false, message: error.message });
+    }
+  } else {
+    res.status(405).json({ success: false, message: 'Method Not Allowed' });
   }
-});
-
-// Start the server
-const server = app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
-
-module.exports = server;
+}
