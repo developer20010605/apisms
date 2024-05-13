@@ -1,24 +1,9 @@
 const admin = require('firebase-admin');
 
-const serviceAccount = {
-  "type": "service_account",
-"project_id": "railwayproject-80596",
-"private_key_id": "aa4c7d1716c117d5b0b35e249d20480fa4784813",
-"private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDvX/C5T07qZIAL\nI1DYAuwUX7PSwzdMW/D2TXdHBUKDoke0Bb8ydr6iaTHwCS4IAQhafdHXNprC3nu4\nd8apEMRSy86komgof17dQPCPzZjdzS+xe94bVuS+xJtVdvH5YGrI3jhE4Zlp9Bsi\nWa7V3yNqVD1zKVFNM8nTvmikdYp7RFMhMZ56A4uF8mHozwvDvVBHBWq4+Vq3ZqY0\nULgow9YpK0T+EqAmcmDUJOtLs6ebhuC+VodBkL9wqi8YLCThKQlcwonlL4F4pNbS\nUbxyJjsL0TMjKvulMGT96HHSH0XNdBx3ealN5lcU4OFXasE+KpK20PIcRAIqmioW\nqlI6kDKBAgMBAAECggEADT53qSkUKq/IzdT0Yh83RKFO57hZVOY5XMdIdCt8VKAj\n63ft7jLXtVCwrKE1ZMf52FfhxlCFG4cHvVsTKMN+uT4BfuZlcOgrLX6sUKiFbrAt\nlVpPHaAfI9bo6T+df7iv79Ert9PrkwsofSwNGlQwN2/VvotoribRYd/FFmRSdyNj\nNmp9xDuVg9KGzqzChZt9EAUVZ2mkPJRiH4vGUYmTMus4ZgnJxOuosSYeYip8Jac1\nXfNWGizXSN1e3PsrCFCV0Hycju2e8Hz+gNR0ZKMQH1Jl+itrLLJO3P2xZli4lAkY\np69bY6IZuNJTIR5d4fMRmJ7mp3jtr6PgjSfR6CGxyQKBgQD+/6z5ts1emx9oxn+p\ncqypo99JOjQC+bxFQAAD2gC9/UZ5cOeGs2BgmhMvejs/Wu2ch/b+KwcqRmowddPV\npGElIuEH7+BVWpykncCVgf4pE8lHaYowNIw5aS44sq+uXuSN6O+IZGJL53x/PUhl\ndmvyA74JoIiMyv7CXw8GeHeEawKBgQDwUI84jOUAev0l85pHLgvNgK9rl2hQqkbs\nL1hWvTCdkqjVEHkyrLilqLb5OKDE3xLFDGLrrou9JWcgf3c7XUjM2h2WCp5BSjuq\nPWUm3G00rXB1x+6kvg6G2OORXxwTWqyYhunt3kFxD3Qzi2oExvixqmznwD6x6L7V\nW8yAJdA/wwKBgQDzMJehF6vI/Bv6asS5r7nnl3eNeMq9w7rAOIdLJQ/sIa6ihwDn\nwA68UnTVpLb4dxmBXVI7mIGe2cTQLq82YyyapCcE0Mqb3Gzjuec/LthcCJi/WHII\nAzVwU1VXkWJm4+0JQgufgk0UotJi7ukqisPr7ZHB0K4pyDcq3EmSHDWvvQKBgDeW\n6wpxzSdnS9fTmgSNKj3HXszMoVzHhtBrw0uNSAmrO1LOFLscKTpo5KqR5t6jm3vp\neZh7L+f5Fvn1gmdBFO4OJnnmyuTffx3KRfPPWZOt6y3TqeiB7mpTEZE3Jw9zEinW\nS5ayqwC0SnUB8uxX+n9epQKW/em5pStFqPCbzqhxAoGAPkOkd4sTFqEAePbs46SX\nfyxGNzqAuX4wKxP/wqEu57WGGv0VAy9xpCqoy97TDf1RnWF4eWjVXRBgj1Fodnya\nXvpY2Jqqt/9wegvcXSRzscZU3OUVFWHh7jqAudmRFLnf4Fs8+5F8eLxMPgMLZdpV\nbfSumqBmE+oBlQy0qkfYmRw=\n-----END PRIVATE KEY-----\n",
-"client_email": "firebase-adminsdk-581xs@railwayproject-80596.iam.gserviceaccount.com",
-"client_id": "110511653636117975591",
-"auth_uri": "https://accounts.google.com/o/oauth2/auth",
-"token_uri": "https://oauth2.googleapis.com/token",
-"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-581xs%40railwayproject-80596.iam.gserviceaccount.com",
-"universe_domain": "googleapis.com"
-};
+// Initialize Firebase Admin SDK with your service account credentials
+const serviceAccount = require('./keyy.json');
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://railwayproject-80596-default-rtdb.firebaseio.com" // Replace with your database URL
-  });
-}
-
-module.exports = { admin };
+module.exports = admin;
