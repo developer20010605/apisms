@@ -1,22 +1,34 @@
-import admin from './firebaseAdmin'; // Import Firebase Admin SDK
-import { NextApiRequest, NextApiResponse } from 'next';
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const { admin } = require('./firebaseAdmin');
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if (req.method === 'POST') {
-    const { phoneNumber } = req.body;
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
 
-    try {
-      const number = "+976" + phoneNumber; // Adjust country code accordingly
-      const verification = await admin.auth().sendPhoneNumberVerification(number);
+app.post('/api/phoneAuth', async (req, res) => {
+  const { phoneNumber } = req.body;
 
-      console.log('Verification ID:', verification);
-
-      res.status(200).json({ success: true, message: 'Verification code sent.' });
-    } catch (error) {
-      console.error('Error in phoneAuth:', error);
-      res.status(500).json({ success: false, message: 'An error occurred.' });
-    }
-  } else {
-    res.status(405).json({ success: false, message: 'Method Not Allowed' });
+  try {
+    const number = "+976" + phoneNumber; // Adjust country code accordingly
+    const message = {
+      notification: {
+        title: 'Verification Code',
+        body: 'Your verification code is: 123456', // Generate a random code here
+      },
+      token: number,
+    };
+    await admin.messaging().send(message);
+    res.status(200).json({ success: true, message: 'Verification code sent.' });
+  } catch (error) {
+    console.error('Error in phoneAuth:', error);
+    res.status(500).json({ success: false, message: error.message });
   }
-}
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
