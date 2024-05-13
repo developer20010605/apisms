@@ -1,8 +1,7 @@
-import admin from './firebaseAdmin'; // Import Firebase Admin SDK
-import { NextApiRequest, NextApiResponse } from 'next';
-import cors from 'cors';
+const admin = require('./firebaseAdmin'); // Import Firebase Admin SDK
+const cors = require('cors');
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req, res) {
   // Enable CORS
   await cors()(req, res);
 
@@ -18,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(200).json({ success: true, message: 'Verification code sent.' });
     } catch (error) {
       console.error('Error in phoneAuth:', error);
-      res.status(500).json({ success: false, message: 'An error occurred.' });
+      res.status(500).json({ success: false, message: error.message });
     }
   } else {
     res.status(405).json({ success: false, message: 'Method Not Allowed' });
