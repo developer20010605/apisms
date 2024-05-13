@@ -6,7 +6,10 @@
       "use": "@vercel/node"
     }
   ],
- "routes": [
-    { "src": "/api/phoneAuth", "dest": "path/to/your/serverless/function" }
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
   ]
 }
