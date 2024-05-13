@@ -4,7 +4,8 @@
   "description": "My Node.js project",
   "main": "index.js",
   "dependencies": {
-    "node-fetch": "^2.6.1",
-    "firebase-admin": "^9.0.0"
+    "express": "^4.17.1",
+    "firebase-admin": "^9.0.0",
+    "node-fetch": "^2.6.1"
   }
 }
