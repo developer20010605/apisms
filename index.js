@@ -13,11 +13,9 @@ app.post('/api/phoneAuth', async (req, res) => {
   try {
     const number = "+976" + phoneNumber; // Adjust country code accordingly
     const options = {
-      phoneNumber: number,
-      // The `recaptchaToken` is optional, but you can add it for extra security
-      recaptchaToken: req.body.recaptchaToken
+      phoneNumber: number
     };
-    const verification = await admin.auth().sendVerificationCode(options);
+    const verification = await admin.auth().signInWithPhoneNumber(number);
 
     console.log('Verification ID:', verification);
 
