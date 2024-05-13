@@ -1,21 +1,9 @@
-// pages/api/phoneAuth.js
+const admin = require('./firebaseAdmin'); // Import Firebase Admin SDK
+const cors = require('cors');
 
-import admin from './firebaseAdmin'; // Import Firebase Admin SDK
-import { NextApiRequest, NextApiResponse } from 'next';
-import cors from 'cors';
-
-const corsMiddleware = cors(); // Initialize CORS middleware
-
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req, res) {
   // Enable CORS
-  await new Promise((resolve, reject) => {
-    corsMiddleware(req, res, (result) => {
-      if (result instanceof Error) {
-        return reject(result);
-      }
-      return resolve(result);
-    });
-  });
+  await cors()(req, res);
 
   if (req.method === 'POST') {
     const { phoneNumber } = req.body;
